@@ -64,20 +64,26 @@ public class ServerGUI extends javax.swing.JFrame
     
     public static String searchTable(String x)
     {
-        String result="Search results ";
+        String result="Search results \n\n";
         try
         {
-            String query = "SELECT * FROM data WHERE "+x;
+            String[] parts = x.split("=");
+            String part1 = parts[0];
+            String part2 = parts[1];
+            String query = "SELECT * FROM data WHERE "+part1+"='"+part2+"'" ;            
             pst=conn.prepareStatement(query);
-            rs=pst.executeQuery();
+            rs=pst.executeQuery(query);
+            
             while(rs.next())
             {
-                result=result+rs.getString(" : Name")+" - "+rs.getString("Number");
+                
+                result=result+rs.getString("Name")+" - "+rs.getString("Number");
             }
         }
-        catch(Exception e)
+        catch(SQLException e)
         {
-            JOptionPane.showMessageDialog(null, "Could not search "+e.getMessage());
+            JOptionPane.showMessageDialog(null, e.getMessage());
+            
         }
         return result;
     }

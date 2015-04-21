@@ -9,6 +9,7 @@ import jade.core.AID;
 import jade.core.Agent;
 import jade.core.behaviours.CyclicBehaviour;
 import jade.lang.acl.ACLMessage;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -60,15 +61,22 @@ public class ClientAgent extends Agent
                     break;
                 case 1 :
                     msg = receive();
-                    if(msg.getContent().substring(0,14).equalsIgnoreCase("search results"))
+                    if (msg!=null)
                     {
-                        ClientGUI.showResult(msg.getContent());
-                        msg = null;
+                        
+                        if(msg.getContent().substring(0,14).equalsIgnoreCase("search results"))
+                        {
+                            ClientGUI.showResult(msg.getContent());
+                            msg = null;
+                        }
+                    
+                        step = 2;
+                        break;
                     }
-                    
-                    step = 2;
-                    break;
-                    
+                    else
+                    {
+                        block();
+                    }
                 case 2 :
                 
                     
